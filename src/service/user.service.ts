@@ -4,10 +4,14 @@ import { Model } from 'mongoose';
 import { User } from 'src/schema/user.schema';
 import * as uuid from 'uuid';
 import * as bcrypt from 'bcrypt';
+import { MailService } from './mail.service';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    private mailService: MailService,
+  ) {}
 
   async registration(email, password) {
     const candidate = await this.userModel.findOne({ email });
@@ -21,5 +25,6 @@ export class UserService {
       password: hashPassword,
       activationLink,
     });
+    await this.mailService.sendActivationMail(email, activationLink);
   }
 }

@@ -3,8 +3,6 @@ import { UserService } from '../service/user.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: UserService) {}
-
   @Post('registration')
   async registration() {
     try {
@@ -14,7 +12,6 @@ export class AppController {
   async login() {
     try {
     } catch (error) {}
-    return '{"result":true, "count":42}';
   }
   @Post('logout')
   async logout() {

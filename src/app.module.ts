@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './controllers/app.controller';
-import { UserService } from './service/user.service';
+import { JwtService } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MailService } from './service/mail.service';
 import { TokenService } from './service/token.service';
-import { userModule } from './module/user.module';
+import { UserModule } from './module/user.module';
 
 @Module({
   imports: [
@@ -14,9 +14,10 @@ import { userModule } from './module/user.module';
       isGlobal: true,
     }),
     MongooseModule.forRoot(process.env.DB_URL),
-    userModule,
+    UserModule,
   ],
   controllers: [AppController],
-  providers: [UserService, MailService, TokenService],
+  providers: [MailService, TokenService, JwtService],
+  exports: [MailService],
 })
 export class AppModule {}
